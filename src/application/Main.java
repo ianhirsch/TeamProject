@@ -2,6 +2,8 @@ package application;
 
 import java.util.ArrayList;
 
+import javax.swing.JTable;
+
 import javafx.application.Application;
 import javafx.collections.FXCollections;
 import javafx.geometry.Insets;
@@ -17,6 +19,8 @@ import javafx.scene.control.Menu;
 import javafx.scene.control.MenuBar;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.ScrollPane;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableView;
 import javafx.scene.layout.Border;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.ColumnConstraints;
@@ -45,40 +49,39 @@ public class Main extends Application {
 			 Menu addFoodBtn = new Menu("Add Food");
 			 menu.getMenus().addAll(filterFoodBtn, loadFoodBtn, addFoodBtn);
 			 
-//			 right.setAlignment(Pos.TOP_CENTER);
-//			 left.setAlignment(Pos.TOP_CENTER);
 			 
 			 Label label = new Label("Foods (69 items)");
 			 label.setPadding(new Insets(5,5,5,5));  
 			 label.setStyle("-fx-background-color: Gainsboro;-fx-border-color: black;");
-			 //right.getChildren().add(label);
+			
+			 
+			 String[] columns = {"Food Name", "Meal?"};
+			 
+			 TableView<String> table = new TableView<String>();
+			 TableColumn<String, String> mealColumn = new TableColumn<String, String>("Meal Name");
+			 TableColumn<String, String> calorieColumn = new TableColumn<String, String>("Total Calories");
+			 table.getColumns().addAll(mealColumn, calorieColumn);
 			 
 			 ScrollPane sp = new ScrollPane();
-			 //right.getChildren().add(sp);
-			 
-			 //right.setPrefSize(300, 150);
-		     //right.setStyle("-fx-background-color: Gainsboro;-fx-border-color: green;");
+			 sp.setContent(table);
 			 
 			 Label labelL = new Label("Foods (6543 items)");
 			 labelL.setPadding(new Insets(5,5,5,5)); 
 			 labelL.setStyle("-fx-background-color: Gainsboro;-fx-border-color: black;");
-			 //left.getChildren().add(labelL);
 			 
+			 
+			 TableView<String> tableL = new TableView<String>();
+			 TableColumn<String, String> addMealColumn = new TableColumn<String, String>("Food");
+			 TableColumn<String, String> foodColumn = new TableColumn<String, String>("Add To Meal");
+			 tableL.getColumns().addAll(addMealColumn, foodColumn);
 			 ScrollPane spL = new ScrollPane();
-			 //left.getChildren().add(spL);
-			 //left.setPrefSize(300, 150);
-		     //left.setStyle("-fx-background-color: Gainsboro;-fx-border-color: blue;");
+			 spL.setContent(tableL);
 			 
-//			 hbox.getChildren().add(left);
-//			 hbox.getChildren().add(right);
-//			 hbox.setAlignment(Pos.CENTER);
-			 
+
 			 Label title = new Label("Meal Planner");
 			 title.setPadding(new Insets(5,5,5,5)); 
 			 title.setStyle("-fx-background-color: Gainsboro;-fx-border-color: black;");
 			 title.setAlignment(Pos.TOP_LEFT);
-//			 whole.getChildren().add(title);
-//			 whole.getChildren().add(hbox);
 			 ColumnConstraints column1 = new ColumnConstraints();
 			 column1.setPercentWidth(50);
 			 ColumnConstraints column2 = new ColumnConstraints();
