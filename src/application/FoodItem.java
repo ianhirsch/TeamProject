@@ -26,6 +26,8 @@ public class FoodItem {
      */
     public FoodItem(String id, String name) {
         // TODO : Complete
+    	this.name = name;
+    	this.id = id;
     }
     
     /**
@@ -43,8 +45,8 @@ public class FoodItem {
      * @return id of the food item
      */
     public String getID() {
-        // TODO : Complete
-        return null;
+        
+        return id;
     }
     
     /**
@@ -54,7 +56,7 @@ public class FoodItem {
      */
     public HashMap<String, Double> getNutrients() {
         // TODO : Complete
-        return null;
+        return nutrients;
     }
 
     /**
@@ -63,6 +65,8 @@ public class FoodItem {
      */
     public void addNutrient(String name, double value) {
         // TODO : Complete
+    	nutrients.put(name, value);
+    	
     }
 
     /**
@@ -71,7 +75,12 @@ public class FoodItem {
      */
     public double getNutrientValue(String name) {
         // TODO : Complete
-        return 0;
+    	if (nutrients.get(name) == null) {
+    		return 0;
+    	}
+    	else {
+    		return nutrients.get(name);
+    	}
     }
     
 }
