@@ -1,4 +1,4 @@
-package TeamProject.src.application;
+package application;
 
 import java.util.ArrayList;
 
@@ -37,6 +37,7 @@ import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
+import javafx.scene.text.Font;
 
 
 
@@ -65,42 +66,45 @@ public class Main extends Application {
 
 
 
-			TableView<String> table = new TableView<String>();
-			TableColumn<String, String> mealColumn = new TableColumn<String, String>("Meal Name");
-			mealColumn.setCellValueFactory(c -> new SimpleStringProperty(new String("Day Care Lunch")));
-			final ObservableList<String> mealList =FXCollections.observableArrayList(
-					new String("Day Care Lunch"));
-			table.getItems().addAll(mealList);
+			TableView<FoodItem> table = new TableView<FoodItem>();
+			TableColumn<FoodItem, String> mealColumn = new TableColumn<FoodItem, String>("Meal");
+			mealColumn.setCellValueFactory(new PropertyValueFactory<>("name"));
+			final ObservableList<FoodItem> mealList =FXCollections.observableArrayList(
+					new FoodItem("0", "Pizza"));
+			table.setItems(mealList);
 			table.getColumns().add(mealColumn);
 
 			ScrollPane sp = new ScrollPane();
 			sp.setContent(table);
 
-			Label labelL = new Label("Foods (6543 items)");
-			labelL.setPadding(new Insets(5,5,5,5)); 
+			Label labelL = new Label("Foods (3 items)");
+			//GridPane.setHalignment(labelL, HPos.CENTER);
+			labelL.setPadding(new Insets(2,2,2,2)); 
 			labelL.setStyle("-fx-background-color: Gainsboro;-fx-border-color: black;");
 
 
-			TableView<String> tableL = new TableView<String>();
-			TableColumn<String, String> foodColumn = new TableColumn<String, String>("Food");
+			TableView<FoodItem> tableL = new TableView<FoodItem>();
+			TableColumn<FoodItem, String> foodColumn = new TableColumn<FoodItem, String>("Food");
 			foodColumn.setSortType(TableColumn.SortType.DESCENDING);
 
 			 			 
 			ScrollPane spL = new ScrollPane();
 
 			final ObservableList<FoodItem> foodList = FXCollections.observableArrayList(
-					new FoodItem("Carrot"),
-					new FoodItem("Apple"),
-					new FoodItem("Pizza"));
-		//`	foodColumn.setCellValueFactory( c -> new SimpleStringProperty(new String(c.toString())));		
-			tableL.getItems().addAll(foodList);
+					new FoodItem("0", "Carrot"),
+					new FoodItem("0", "Peach"),
+					new FoodItem("0", "Pizza"));
+			foodColumn.setCellValueFactory( new PropertyValueFactory<>("name"));		
+			tableL.setItems(foodList);
 			tableL.getColumns().add(foodColumn);
 			spL.setContent(tableL);
 
-			Label title = new Label("Meal Planner");
+			Label title = new Label("Plan Your Meal!");
 			title.setPadding(new Insets(5,5,5,5)); 
-			title.setStyle("-fx-background-color: Gainsboro;-fx-border-color: black;");
+			title.setStyle("-fx-font: 30px Tahoma;");
+			title.setUnderline(true);
 			title.setAlignment(Pos.TOP_LEFT);
+			title.setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE);
 
 
 			ColumnConstraints column1 = new ColumnConstraints();
