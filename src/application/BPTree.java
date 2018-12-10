@@ -1,5 +1,7 @@
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
@@ -182,7 +184,7 @@ public class BPTree<K extends Comparable<K>, V> implements BPTreeADT<K, V> {
          */
         InternalNode() {
             super();
-            // TODO : Complete
+            this.children = new ArrayList<Node>();
         }
         
         /**
@@ -256,7 +258,7 @@ public class BPTree<K extends Comparable<K>, V> implements BPTreeADT<K, V> {
          */
         LeafNode() {
             super();
-            // TODO : Complete
+            this.values = new ArrayList<V>();
         }
         
         
@@ -274,8 +276,15 @@ public class BPTree<K extends Comparable<K>, V> implements BPTreeADT<K, V> {
          * @see BPTree.Node#isOverflow()
          */
         boolean isOverflow() {
-            // TODO : Complete
-            return false;
+        	 
+        	if(values.size()> branchingFactor -1) {//values list is beyond capacity
+       		   return true;
+       	   }
+       	   else {
+       		   return false;
+       	   
+       	   
+          }
         }
         
         /**
@@ -283,7 +292,16 @@ public class BPTree<K extends Comparable<K>, V> implements BPTreeADT<K, V> {
          * @see BPTree.Node#insert(Comparable, Object)
          */
         void insert(K key, V value) {
-            // TODO : Complete
+           
+        	int insertLoc = Collections.binarySearch(keys, key); //returns the negative location of where key should be inserted
+           int index = -insertLoc -1;
+           
+           values.add(index, value);//add value to the value List with calculated index
+           keys.add(index, key);// add eky to the value List with the calculated index
+           
+           if(isOverflow()) {
+        	 
+           }
         }
         
         /**
