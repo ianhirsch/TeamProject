@@ -120,7 +120,7 @@ public class BPTree<K extends Comparable<K>, V> implements BPTreeADT<K, V> {
          * Package constructor
          */
         Node() {
-            // TODO : Complete
+           this.keys = new ArrayList<K>();
         }
         
         /**
