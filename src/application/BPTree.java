@@ -201,8 +201,12 @@ public class BPTree<K extends Comparable<K>, V> implements BPTreeADT<K, V> {
          * @see BPTree.Node#isOverflow()
          */
         boolean isOverflow() {
-            // TODO : Complete
-            return false;
+            if (children.size() > branchingFactor) {
+            	return true;
+            }
+            else {
+            	return false;
+            }
         }
         
         /**
@@ -210,8 +214,17 @@ public class BPTree<K extends Comparable<K>, V> implements BPTreeADT<K, V> {
          * @see BPTree.Node#insert(java.lang.Comparable, java.lang.Object)
          */
         void insert(K key, V value) {
-            node lowerLevel = new Node();
+           int locationIndex = Collections.binarySearch(keys, key); //find index to be inserted at
+           int newSignIndex = -locationIndex -1; //
+          Node insertAtLeaf = children.get(newSignIndex); //returns node at given index to be inserted at
+          
+          insertAtLeaf.insert(key, value);
+          
+          if(insertAtLeaf.isOverflow()) {
+        	  Node splittingNode = insertAtLeaf.split(); //split the inserted node since overflow
+        	  
             
+          }
         }
         
         /**
@@ -219,7 +232,21 @@ public class BPTree<K extends Comparable<K>, V> implements BPTreeADT<K, V> {
          * @see BPTree.Node#split()
          */
         Node split() {
-            // TODO : Complete
+           int startingSplit = (keys.size() /2) + 1;
+           int endingSplit = keys.size();
+           
+          InternalNode newNode = new InternalNode();
+            newNode.keys.addAll(keys.subList(startingSplit, endingSplit));
+            newNode.children.addAll(children.subList(startingSplit, endingSplit));
+            
+            this.keys.subList(startingSplit, endingSplit);
+            this.children.subList(startingSplit, endingSplit);
+            
+            return newNode;
+            
+            
+            
+            
             return null;
         }
         
