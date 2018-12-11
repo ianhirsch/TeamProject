@@ -210,7 +210,8 @@ public class BPTree<K extends Comparable<K>, V> implements BPTreeADT<K, V> {
          * @see BPTree.Node#insert(java.lang.Comparable, java.lang.Object)
          */
         void insert(K key, V value) {
-            // TODO : Complete
+            node lowerLevel = new Node();
+            
         }
         
         /**
@@ -299,8 +300,14 @@ public class BPTree<K extends Comparable<K>, V> implements BPTreeADT<K, V> {
            values.add(index, value);//add value to the value List with calculated index
            keys.add(index, key);// add eky to the value List with the calculated index
            
-           if(isOverflow()) {
-        	 
+           if(root.isOverflow()) {
+        	   Node newSplit = split();
+        	   InternalNode newRoot = new InternalNode();
+        	   newRoot.keys.add(newSplit.getFirstLeafKey); //get the first value in the new split and add this.
+        	   newRoot.children.add(this); //add current instance to children
+        	   newRoot.children.add(newSplit); //add newNode to children
+        	   
+        	   root = newRoot;
            }
         }
         
@@ -309,8 +316,22 @@ public class BPTree<K extends Comparable<K>, V> implements BPTreeADT<K, V> {
          * @see BPTree.Node#split()
          */
         Node split() {
-            // TODO : Complete
-            return null;
+           LeafNode newNode = new LeafNode();
+           
+           int indexFrom = (keys.size() + 1)/2; //split the contents in half
+           int indexTo = (keys.size());
+           
+           newNode.keys.addAll(keys.subList(indexFrom,indexTo));//add keys and and values into new node
+           newNode.values.addAll(values.subList(indexFrom, indexTo));
+           
+           keys.subList(indexFrom, indexTo).clear();
+           values.subList(indexFrom, indexTo);
+             
+            newNode.next = this.next; 
+            newNode.previous = this; 
+            next.previous = newNode;
+            this.next = newNode;
+            return newNode;
         }
         
         /**
