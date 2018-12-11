@@ -120,7 +120,7 @@ public class BPTree<K extends Comparable<K>, V> implements BPTreeADT<K, V> {
          * Package constructor
          */
         Node() {
-            // TODO : Complete
+        	this.next = null;
         }
         
         /**
@@ -182,7 +182,7 @@ public class BPTree<K extends Comparable<K>, V> implements BPTreeADT<K, V> {
          */
         InternalNode() {
             super();
-            // TODO : Complete
+            this.children = children;
         }
         
         /**
@@ -190,8 +190,8 @@ public class BPTree<K extends Comparable<K>, V> implements BPTreeADT<K, V> {
          * @see BPTree.Node#getFirstLeafKey()
          */
         K getFirstLeafKey() {
-            // TODO : Complete
-            return null;
+        		return children.get(0).getFirstLeafKey();
+        	}
         }
         
         /**
@@ -251,12 +251,17 @@ public class BPTree<K extends Comparable<K>, V> implements BPTreeADT<K, V> {
         // Reference to the previous leaf node
         LeafNode previous;
         
+        List<K> keys;
+        
         /**
          * Package constructor
          */
         LeafNode() {
             super();
-            // TODO : Complete
+            this.values = new ArrayList<V>();
+            this.next = null;
+            this.previous = null;
+            this.keys = new ArrayList<K>();
         }
         
         
@@ -265,8 +270,7 @@ public class BPTree<K extends Comparable<K>, V> implements BPTreeADT<K, V> {
          * @see BPTree.Node#getFirstLeafKey()
          */
         K getFirstLeafKey() {
-            // TODO : Complete
-            return null;
+            return keys.get(0);
         }
         
         /**

@@ -45,7 +45,8 @@ public class Main extends Application {
 	@Override
 	public void start(Stage primaryStage) {
 		try {			 
-
+			
+			
 			GridPane grid = new GridPane();
 
 			final MenuBar menu = new MenuBar();
