@@ -1,5 +1,6 @@
 import java.util.HashMap;
 import java.util.List;
+import java.io.*;
 
 /**
  * This class represents the backend for managing all 
@@ -20,7 +21,7 @@ public class FoodData implements FoodDataADT<FoodItem> {
      * Public constructor
      */
     public FoodData() {
-        // TODO : Complete
+        
     }
     
     
@@ -31,6 +32,26 @@ public class FoodData implements FoodDataADT<FoodItem> {
     @Override
     public void loadFoodItems(String filePath) {
         // TODO : Complete
+        try {
+            FileReader file = new FileReader(filePath);
+            BufferedReader reader = new BufferedReader(file);
+            String next = reader.readLine();
+            while(next != null && !next.equals("")) {
+                String [] data = next.split(",");
+            
+                FoodItem foodItem = new FoodItem(data[0] , data[1]);
+            
+                for (int i = 2; i < data.length; i = i + 2){
+                    foodItem.addNutrient(data[i], Double.parseDouble(data[i + 1]));
+                }
+                addFoodItem(foodItem);
+                next = reader.readLine();
+            }
+        }
+        catch(IOException e) {
+            e.printStackTrace();
+            System.out.println("exception was thrown.");
+        }
     }
 
     /*
@@ -39,8 +60,13 @@ public class FoodData implements FoodDataADT<FoodItem> {
      */
     @Override
     public List<FoodItem> filterByName(String substring) {
-        // TODO : Complete
-        return null;
+        List<FoodItem> nameFilter;
+        for (FoodItem temp : foodItemList) {
+            if (temp.getName().toLowerCase().contains(substring.toLowerCase())) {
+                nameFilter.add(temp);
+            }
+        }
+        return nameFilter;
     }
 
     /*
@@ -60,8 +86,9 @@ public class FoodData implements FoodDataADT<FoodItem> {
     @Override
     public void addFoodItem(FoodItem foodItem) {
         // TODO : Complete
+        foodItemList.add(foodItem);
     }
-
+    
     /*
      * (non-Javadoc)
      * @see skeleton.FoodDataADT#getAllFoodItems()
@@ -69,7 +96,21 @@ public class FoodData implements FoodDataADT<FoodItem> {
     @Override
     public List<FoodItem> getAllFoodItems() {
         // TODO : Complete
-        return null;
+        return foodItemList;
+    }
+    public void saveFoodItems(String filename) {
+        BufferedWriter writer = new BufferedWriter(new FileWriter(filename));
+        for (FoodItem temp : foodItemList) {
+            writer.write(temp.getID() + ",");
+            writer.write(temp.getName() + ",");
+            HashMap<String,Double> nutrients = temp.getNutrients();
+            for(String key : nutrients.keySet()) {
+                writer.write(key + ",");
+                writer.write(temp.getNutrientValue(key) + ",");
+            }
+            writer.newLine();
+        }
+        writer.close();
     }
 
 }

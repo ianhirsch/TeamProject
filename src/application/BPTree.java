@@ -42,6 +42,8 @@ public class BPTree<K extends Comparable<K>, V> implements BPTreeADT<K, V> {
             throw new IllegalArgumentException(
                "Illegal branching factor: " + branchingFactor);
         }
+        this.branchingFactor = branchingFactor;
+        root = new LeafNode();
         // TODO : Complete
     }
     
@@ -52,7 +54,7 @@ public class BPTree<K extends Comparable<K>, V> implements BPTreeADT<K, V> {
      */
     @Override
     public void insert(K key, V value) {
-        // TODO : Complete
+        root.insert(key, value);
     }
     
     
@@ -64,12 +66,13 @@ public class BPTree<K extends Comparable<K>, V> implements BPTreeADT<K, V> {
     public List<V> rangeSearch(K key, String comparator) {
         if (!comparator.contentEquals(">=") && 
             !comparator.contentEquals("==") && 
-            !comparator.contentEquals("<=") )
+            !comparator.contentEquals("<=") ) {
             return new ArrayList<V>();
-        // TODO : Complete
-        return null;
+        
     }
-    
+        
+    return root.rangeSearch(key,comparator);
+    }
     
     /*
      * (non-Javadoc)
@@ -269,11 +272,56 @@ public class BPTree<K extends Comparable<K>, V> implements BPTreeADT<K, V> {
          * @see BPTree.Node#rangeSearch(java.lang.Comparable, java.lang.String)
          */
         List<V> rangeSearch(K key, String comparator) {
-            // TODO : Complete
-            return null;
-        }
+           ArrayList<V> rangeSearchValues = new ArrayList<V>(); //ArrayList to hold the values which are to be returned
+           
+           Node treeTraverser = root; 
+           
+           while(treeTraverser instanceof BPTree.InternalNode) { //traverse until reach leafNode
+        	  
+     
+        	   
+            		   int nextLocation = Collections.binarySearch(keys, key); 
+            		     int posLocation = nextLocation >= 0? nextLocation : - nextLocation -1;
+            		        treeTraverser = children.get(posLocation); 
+           }
+        	 
+           LeafNode leafs =  (BPTree<K, V>.InternalNode.LeafNode) treeTraverser;
+           
+           if(comparator.equals("<=")) { //if less than iterate to first leafNode
+        	   
+        	   while(leafs.previous !=null) {
+        		   leafs = leafs.previous;
+        	   }
+        	   
+        	   
+        	   
+           }
+        	   
+           }
+           
     
-    } // End of class InternalNode
+        		 
+        		
+        		 
+        		 
+        		
+        		   
+        		   
+        		   
+     
+        	   
+       
+        	   
+           
+
+         	  
+           
+           
+           
+           
+        
+    
+     // End of class InternalNode
     
     
     /**
@@ -379,7 +427,7 @@ public class BPTree<K extends Comparable<K>, V> implements BPTreeADT<K, V> {
          * @see BPTree.Node#rangeSearch(Comparable, String)
          */
         List<V> rangeSearch(K key, String comparator) {
-            // TODO : Complete
+            // easier to implement since you are starting at the leaf.
             return null;
         }
         
