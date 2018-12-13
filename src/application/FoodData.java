@@ -20,7 +20,7 @@ public class FoodData implements FoodDataADT<FoodItem> {
 
     // Map of nutrients and their corresponding index
     private HashMap<String, BPTree<Double, FoodItem>> indexes;
-    private BPTree protein = new BPTree(BranchingFactor);
+    //private BPTree protein = new BPTree(BranchingFactor);
     
     /**
      * Public constructor
