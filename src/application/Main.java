@@ -1,5 +1,6 @@
 package application;
 
+import java.nio.file.Paths;
 import java.util.ArrayList;
 
 import javax.swing.JTable;
@@ -45,8 +46,6 @@ public class Main extends Application {
 	@Override
 	public void start(Stage primaryStage) {
 		try {			 
-			
-			
 			GridPane grid = new GridPane();
 
 			final MenuBar menu = new MenuBar();
@@ -90,12 +89,16 @@ public class Main extends Application {
 
 			 			 
 			ScrollPane spL = new ScrollPane();
+			
+			FoodData initialFoodData = new FoodData();
+			initialFoodData.loadFoodItems(Paths.get(System.getProperty("user.dir"), "foodItems.csv").toString());
 
-			final ObservableList<FoodItem> foodList = FXCollections.observableArrayList(
-					new FoodItem("0", "Carrot"),
-					new FoodItem("0", "Peach"),
-					new FoodItem("0", "Pizza"));
-			foodColumn.setCellValueFactory( new PropertyValueFactory<>("name"));		
+			final ObservableList<FoodItem> foodList = FXCollections.observableArrayList();
+			for (FoodItem foodItem : initialFoodData.getAllFoodItems()) {
+				foodList.add(foodItem);
+			}
+			
+			foodColumn.setCellValueFactory( new PropertyValueFactory<>("name"));
 			tableL.setItems(foodList);
 			tableL.getColumns().add(foodColumn);
 			spL.setContent(tableL);
@@ -130,8 +133,7 @@ public class Main extends Application {
 			grid.add(sp, 1, 2);
 			grid.add(spL, 0, 2);
 			grid.add(analyzeMealButton, 1, 3);
-
-
+			
 			Scene scene = new Scene(grid, 550, 550);
 			primaryStage.setTitle("Meal Planner");
 			primaryStage.setScene(scene);
