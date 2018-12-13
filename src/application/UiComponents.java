@@ -37,6 +37,8 @@ public class UiComponents {
 	private String filePath;
 	private GridPane grid;
 	private ObservableList<FoodItem> foodList;
+	private ObservableList<FoodItem> mealList;
+	private ObservableValue<String> foodCount;
 
 	public UiComponents(Stage stage) {
 		this.grid = new GridPane();
@@ -49,6 +51,11 @@ public class UiComponents {
 		column1.setPercentWidth(50);
 		ColumnConstraints column2 = new ColumnConstraints();
 		column2.setPercentWidth(50);
+		
+		Button filterFoodBtn = new Button("Filter Food");
+		Button addFoodBtn = new Button("Add Food");	
+		filterFoodBtn.setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE);
+		addFoodBtn.setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE);
 
 		grid.getColumnConstraints().addAll(column1, column2);
 		grid.setHgap(10); 
@@ -56,13 +63,14 @@ public class UiComponents {
 		grid.setPadding(new Insets(10, 10, 10, 10));
 
 		grid.add(planMealLabel(), 0, 0);
-		grid.add(menu, 1, 0);
+		grid.add(filterFoodBtn, 1, 0);
+		grid.add(addFoodBtn, 0, 4);
 		grid.add(foodCountLabel(), 0, 1);
 		grid.add(clickLabel(), 1, 1);
-		grid.add(foodItemList(), 1, 2);
-		grid.add(mealList(), 0, 2);
+		grid.add(foodItemList(), 0, 2);
+		grid.add(mealList(), 1, 2);
 		grid.add(loadFoodButton(stage), 0, 3);
-		grid.add(analyzeMealButton, 1, 3);
+		grid.add(analyzeMealButton(stage), 1, 3);
 	}
 
 //	public Button filterFoodButton() {
@@ -74,8 +82,8 @@ public class UiComponents {
 	}
 
 	private Label foodCountLabel() {
-		Label labelL = new Label();
-		//labelL.textProperty().bind(Bindings.size(foodList));;
+		Label labelL = new Label("There are 250 food items");
+		//labelL.textProperty().bind(foodCount);;
 		labelL.setPadding(new Insets(2,2,2,2)); 
 		labelL.setStyle("-fx-background-color: Gainsboro;-fx-border-color: black;");
 		return labelL;
@@ -156,8 +164,15 @@ public class UiComponents {
 		return btn;
 	}
 
-//	public Menu addFoodMenu() {
-//
+//	public Button addFoodMenu() {
+//		Button addFood = new Button("Add Food");
+//		addFood.setOnAction(new EventHandler<ActionEvent>() {
+//			@Override
+//			public void handle(final ActionEvent e) {
+//				
+//			}
+//				
+//		});
 //	}
 
 	private TableView<FoodItem> foodItemList() {
@@ -167,7 +182,7 @@ public class UiComponents {
 
 		FoodData initialFoodData = new FoodData();
 		initialFoodData.loadFoodItems(Paths.get(System.getProperty("user.dir"), "foodItems.csv").toString());
-
+		
 		final ObservableList<FoodItem> foodList = FXCollections.observableArrayList();
 		for (FoodItem foodItem : initialFoodData.getAllFoodItems()) {
 			foodList.add(foodItem);
@@ -183,9 +198,6 @@ public class UiComponents {
 		TableView<FoodItem> table = new TableView<FoodItem>();
 		TableColumn<FoodItem, String> mealColumn = new TableColumn<FoodItem, String>("Meal");
 		mealColumn.setCellValueFactory(new PropertyValueFactory<>("name"));
-		final ObservableList<FoodItem> mealList = FXCollections.observableArrayList(
-				new FoodItem("0", "Pizza"));
-		table.setItems(mealList);
 		table.getColumns().add(mealColumn);
 		return table;
 	}

@@ -64,7 +64,7 @@ public class FoodData implements FoodDataADT<FoodItem> {
      */
     @Override
     public List<FoodItem> filterByName(String substring) {
-        List<FoodItem> nameFilter;
+        List<FoodItem> nameFilter = new ArrayList<FoodItem>();
         for (FoodItem temp : foodItemList) {
             if (temp.getName().toLowerCase().contains(substring.toLowerCase())) {
                 nameFilter.add(temp);
