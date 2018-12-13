@@ -101,7 +101,6 @@ public class FoodData implements FoodDataADT<FoodItem> {
      */
     @Override
     public List<FoodItem> getAllFoodItems() {
-    	//Collections.sort(foodItemList, alphabetized);
         return foodItemList;
     }
     
@@ -122,15 +121,6 @@ public class FoodData implements FoodDataADT<FoodItem> {
     	} catch(IOException e) {
     		//THROW ERROR MESSAGE
     	}
-    }
-    
-    private static Comparator<FoodItem> alphabetized = new Comparator<FoodItem>() {
-    	//allos food list to be alphabetized
-    	public int compare(FoodItem fd1, FoodItem fd2) {
-    		String first = fd1.getName();
-    		String second = fd2.getName();
-    		return first.compareTo(second);
-    	}
-    };
+    }   
 
 }
