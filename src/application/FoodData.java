@@ -20,7 +20,7 @@ public class FoodData implements FoodDataADT<FoodItem> {
 
     // Map of nutrients and their corresponding index
     private HashMap<String, BPTree<Double, FoodItem>> indexes;
-    private BPTree protein = new BPTree(BranchingFactor);
+    //private BPTree protein = new BPTree(BranchingFactor);
     
     /**
      * Public constructor
@@ -64,7 +64,7 @@ public class FoodData implements FoodDataADT<FoodItem> {
      */
     @Override
     public List<FoodItem> filterByName(String substring) {
-        List<FoodItem> nameFilter;
+        List<FoodItem> nameFilter = new ArrayList<FoodItem>();
         for (FoodItem temp : foodItemList) {
             if (temp.getName().toLowerCase().contains(substring.toLowerCase())) {
                 nameFilter.add(temp);
