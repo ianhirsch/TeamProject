@@ -37,7 +37,6 @@ public class FoodData implements FoodDataADT<FoodItem> {
      */
     @Override
     public void loadFoodItems(String filePath) {
-        // TODO : Complete
         try {
             FileReader file = new FileReader(filePath);
             BufferedReader reader = new BufferedReader(file);
@@ -55,7 +54,6 @@ public class FoodData implements FoodDataADT<FoodItem> {
             }
         }
         catch(IOException e) {
-            e.printStackTrace();
             System.out.println("exception was thrown.");
         }
     }

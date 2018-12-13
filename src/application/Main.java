@@ -51,107 +51,128 @@ public class Main extends Application {
 	public void start(Stage primaryStage) {
 		try {			 
 			
-			UiComponents ui = new UiComponents();
-			GridPane grid = new GridPane();
-
-			final MenuBar menu = new MenuBar();
-
-			Menu filterFoodBtn = new Menu("Filter Food");
-			Button loadFoodBtn = ui.loadFoodButton(primaryStage);
-			Menu addFoodBtn = new Menu("Add Food");
-			menu.getMenus().addAll(filterFoodBtn, addFoodBtn);
-
-			//MOVED
-			Label label = new Label("\u2193 Click foods to add them to a meal \u2193");
-			label.setTextFill(Color.RED);
-			label.setPadding(new Insets(5,5,5,5));  
-			GridPane.setHalignment(label, HPos.CENTER);
-			label.setStyle("-fx-font-weight: bold");
-			//
-
-			String[] columns = {"Food Name", "Meal?"};
-
-
-
-			TableView<FoodItem> table = new TableView<FoodItem>();
-			TableColumn<FoodItem, String> mealColumn = new TableColumn<FoodItem, String>("Meal");
-			mealColumn.setCellValueFactory(new PropertyValueFactory<>("name"));
-			final ObservableList<FoodItem> mealList = FXCollections.observableArrayList(
-					new FoodItem("0", "Pizza"));
-			table.setItems(mealList);
-			table.getColumns().add(mealColumn);
-
-			Label labelL = new Label("Foods (3 items)");
-			//GridPane.setHalignment(labelL, HPos.CENTER);
-			labelL.setPadding(new Insets(2,2,2,2)); 
-			labelL.setStyle("-fx-background-color: Gainsboro;-fx-border-color: black;");
-
-
-			TableView<FoodItem> tableL = new TableView<FoodItem>();
-			TableColumn<FoodItem, String> foodColumn = new TableColumn<FoodItem, String>("Food");
-			foodColumn.setSortType(TableColumn.SortType.DESCENDING);
+			UiComponents ui = new UiComponents(primaryStage);
+//			GridPane grid = new GridPane();
+//
+//			final MenuBar menu = new MenuBar();
+//
+//			Menu filterFoodBtn = new Menu("Filter Food");
+//			Button loadFoodBtn = ui.loadFoodButton(primaryStage);
+//			Menu addFoodBtn = new Menu("Add Food");
+//			menu.getMenus().addAll(filterFoodBtn, addFoodBtn);
+//
+//			//MOVED
+//			Label label = new Label("\u2193 Click foods to add them to a meal \u2193");
+//			label.setTextFill(Color.RED);
+//			label.setPadding(new Insets(5,5,5,5));  
+//			GridPane.setHalignment(label, HPos.CENTER);
+//			label.setStyle("-fx-font-weight: bold");
+//			//
+//
+//			//MOVED
+//			TableView<FoodItem> table = new TableView<FoodItem>();
+//			TableColumn<FoodItem, String> mealColumn = new TableColumn<FoodItem, String>("Meal");
+//			mealColumn.setCellValueFactory(new PropertyValueFactory<>("name"));
+//			final ObservableList<FoodItem> mealList = FXCollections.observableArrayList(
+//					new FoodItem("0", "Pizza"));
+//			table.setItems(mealList);
+//			table.getColumns().add(mealColumn);
+//			//
+//			
+//			//MOVED
+//			Label labelL = new Label("Foods (3 items)");
+//			labelL.setPadding(new Insets(2,2,2,2)); 
+//			labelL.setStyle("-fx-background-color: Gainsboro;-fx-border-color: black;");
+//			//
+//			
+//			//Moved
+//			TableView<FoodItem> tableL = new TableView<FoodItem>();
+//			TableColumn<FoodItem, String> foodColumn = new TableColumn<FoodItem, String>("Food");
+//			foodColumn.setSortType(TableColumn.SortType.DESCENDING);
+//			
+//			FoodData initialFoodData = new FoodData();
+//			initialFoodData.loadFoodItems(Paths.get(System.getProperty("user.dir"), "foodItems.csv").toString());
+//
+//			final ObservableList<FoodItem> foodList = FXCollections.observableArrayList();
+//			for (FoodItem foodItem : initialFoodData.getAllFoodItems()) {
+//				foodList.add(foodItem);
+//			}
+//			
+//			foodColumn.setCellValueFactory( new PropertyValueFactory<>("name"));
+//			tableL.setItems(foodList);
+//			tableL.getColumns().add(foodColumn);
+//			//
+//			
+//			//MOVED
+//			Label title = new Label("Plan Your Meal!");
+//			title.setPadding(new Insets(5,5,5,5)); 
+//			title.setStyle("-fx-font: 30px Tahoma;");
+//			title.setUnderline(true);
+//			title.setAlignment(Pos.TOP_LEFT);
+//			title.setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE);
+//			//
+//
+//			//MOVED
+//			ColumnConstraints column1 = new ColumnConstraints();
+//			column1.setPercentWidth(50);
+//			ColumnConstraints column2 = new ColumnConstraints();
+//			column2.setPercentWidth(50);
+//			//
+//
+//			//MOVED
+//			Button analyzeMealButton = new Button("Analyze Meal");
+//			analyzeMealButton.setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE);
+//			analyzeMealButton.setOnAction(
+//			        new EventHandler<ActionEvent>() {
+//			            @Override
+//			            public void handle(ActionEvent event) {
+//			            	double totalCalories = 0;
+//			            	double totalFat = 0;
+//			            	double totalFiber = 0;
+//			            	double totalProtein = 0;
+//			            	double totalCarbohydrates = 0;
+//			
+//			            	for(int i = 0; i < mealList.size(); i++) {
+//			            		totalCalories = totalCalories + mealList.get(i).getNutrientValue("calories");
+//			            		totalFat = totalFat + mealList.get(i).getNutrientValue("fat");
+//			            		totalFiber = totalFiber + mealList.get(i).getNutrientValue("fiber");
+//			            		totalCarbohydrates = totalCarbohydrates + mealList.get(i).getNutrientValue("carbohydrate");
+//			            		totalProtein = totalProtein + mealList.get(i).getNutrientValue("protein");
+//			            	}
+//			                final Stage dialog = new Stage();
+//			                dialog.initModality(Modality.APPLICATION_MODAL);
+//			                dialog.initOwner(primaryStage);
+//			                VBox dialogVbox = new VBox(20);
+//			                dialogVbox.getChildren().add(new Text("Number of Foods in Meal: " + mealList.size() + 
+//			                		"\n" + "Total Calories: " + totalCalories + "\n" + "Total Fat: " + totalFat +  "\n" 
+//			                		+ "Total Carbohydrates: " + totalCarbohydrates + "\n" + "Total Fiber: " + totalFiber
+//			                		+ "\n" + "Total Protein " + totalProtein + "\n\n" + "END OF ANALYSIS"));
+//			                Scene dialogScene = new Scene(dialogVbox, 300, 200);
+//			                dialog.setScene(dialogScene);
+//			                dialog.show();
+//			            }
+//			         });
+//			//
+//			
+//			//Moved
+//			grid.getColumnConstraints().addAll(column1, column2);
+//			grid.setHgap(10); 
+//			grid.setVgap(10);
+//			grid.setPadding(new Insets(10, 10, 10, 10));
+//
+//
+//
+//			grid.add(title, 0, 0);
+//			grid.add(menu, 1, 0);
+//			grid.add(labelL, 0, 1);
+//			grid.add(label, 1, 1);
+//			grid.add(table, 1, 2);
+//			grid.add(tableL, 0, 2);
+//			grid.add(loadFoodBtn, 0, 3);
+//			grid.add(analyzeMealButton, 1, 3);
+//			//
 			
-			FoodData initialFoodData = new FoodData();
-			initialFoodData.loadFoodItems(Paths.get(System.getProperty("user.dir"), "foodItems.csv").toString());
-
-			final ObservableList<FoodItem> foodList = FXCollections.observableArrayList();
-			for (FoodItem foodItem : initialFoodData.getAllFoodItems()) {
-				foodList.add(foodItem);
-			}
-			
-			foodColumn.setCellValueFactory( new PropertyValueFactory<>("name"));
-			tableL.setItems(foodList);
-			tableL.getColumns().add(foodColumn);
-
-			Label title = new Label("Plan Your Meal!");
-			title.setPadding(new Insets(5,5,5,5)); 
-			title.setStyle("-fx-font: 30px Tahoma;");
-			title.setUnderline(true);
-			title.setAlignment(Pos.TOP_LEFT);
-			title.setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE);
-
-
-			ColumnConstraints column1 = new ColumnConstraints();
-			column1.setPercentWidth(50);
-			ColumnConstraints column2 = new ColumnConstraints();
-			column2.setPercentWidth(50);
-
-			//MOVED
-			Button analyzeMealButton = new Button("Analyze Meal");
-			analyzeMealButton.setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE);
-			analyzeMealButton.setOnAction(
-			        new EventHandler<ActionEvent>() {
-			            @Override
-			            public void handle(ActionEvent event) {
-			                final Stage dialog = new Stage();
-			                dialog.initModality(Modality.APPLICATION_MODAL);
-			                dialog.initOwner(primaryStage);
-			                VBox dialogVbox = new VBox(20);
-			                dialogVbox.getChildren().add(new Text("Dialog"));
-			                Scene dialogScene = new Scene(dialogVbox, 300, 200);
-			                dialog.setScene(dialogScene);
-			                dialog.show();
-			            }
-			         });
-			//
-			
-			grid.getColumnConstraints().addAll(column1, column2);
-			grid.setHgap(10); 
-			grid.setVgap(10);
-			grid.setPadding(new Insets(10, 10, 10, 10));
-
-
-
-			grid.add(title, 0, 0);
-			grid.add(menu, 1, 0);
-			grid.add(labelL, 0, 1);
-			grid.add(label, 1, 1);
-			grid.add(table, 1, 2);
-			grid.add(tableL, 0, 2);
-			grid.add(loadFoodBtn, 0, 3);
-			grid.add(analyzeMealButton, 1, 3);
-			
-			Scene scene = new Scene(grid, 550, 550);
+			Scene scene = new Scene(ui.getGrid(), 550, 550);
 			primaryStage.setTitle("Meal Planner");
 			primaryStage.setScene(scene);
 			primaryStage.show();
