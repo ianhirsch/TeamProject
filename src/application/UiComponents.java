@@ -150,7 +150,8 @@ public class UiComponents {
 		btn.setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE);
 
 		final FileChooser fChoose = new FileChooser();
-		fChoose.getExtensionFilters().add( new FileChooser.ExtensionFilter("CSV", "*.csv"));
+		fChoose.getExtensionFilters().addAll( new FileChooser.ExtensionFilter("CSV", "*.csv"),
+				new FileChooser.ExtensionFilter("TXT", "*.txt"));
 		btn.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(final ActionEvent e) {

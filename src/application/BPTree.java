@@ -294,9 +294,6 @@ public class BPTree<K extends Comparable<K>, V> implements BPTreeADT<K, V> {
 				while(leafs.previous !=null) {
 					leafs = leafs.previous;
 				}
-
-
-
 			}
 			return rangeSearchValues;
 		}
