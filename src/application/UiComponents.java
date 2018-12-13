@@ -20,6 +20,7 @@ import javafx.scene.control.Menu;
 import javafx.scene.control.MenuBar;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableRow;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.ColumnConstraints;
@@ -37,7 +38,7 @@ public class UiComponents {
 	private String filePath;
 	private GridPane grid;
 	private ObservableList<FoodItem> foodList;
-	private ObservableList<FoodItem> mealList;
+	public ObservableList<FoodItem> mealList = FXCollections.observableArrayList();;
 	private ObservableValue<String> foodCount;
 
 	public UiComponents(Stage stage) {
@@ -116,7 +117,7 @@ public class UiComponents {
 		                dialogVbox.getChildren().add(new Text("Number of Foods in Meal: " + mealList.size() + 
 		                		"\n" + "Total Calories: " + totalCalories + "\n" + "Total Fat: " + totalFat +  "\n" 
 		                		+ "Total Carbohydrates: " + totalCarbohydrates + "\n" + "Total Fiber: " + totalFiber
-		                		+ "\n" + "Total Protein " + totalProtein + "\n\n" + "END OF ANALYSIS"));
+		                		+ "\n" + "Total Protein: " + totalProtein + "\n\n" + "END OF ANALYSIS"));
 		                Scene dialogScene = new Scene(dialogVbox, 300, 200);
 		                dialog.setScene(dialogScene);
 		                dialog.show();
@@ -179,11 +180,13 @@ public class UiComponents {
 		TableView<FoodItem> tableL = new TableView<FoodItem>();
 		TableColumn<FoodItem, String> foodColumn = new TableColumn<FoodItem, String>("Food");
 		foodColumn.setSortType(TableColumn.SortType.DESCENDING);
+		//foodColumn.
 
 		FoodData initialFoodData = new FoodData();
 		initialFoodData.loadFoodItems(Paths.get(System.getProperty("user.dir"), "foodItems.csv").toString());
 		
 		final ObservableList<FoodItem> foodList = FXCollections.observableArrayList();
+		//ObservableList<FoodItem> mealList = FXCollections.observableArrayList();
 		for (FoodItem foodItem : initialFoodData.getAllFoodItems()) {
 			foodList.add(foodItem);
 		}
@@ -191,6 +194,16 @@ public class UiComponents {
 		foodColumn.setCellValueFactory( new PropertyValueFactory<>("name"));
 		tableL.setItems(foodList);
 		tableL.getColumns().add(foodColumn);
+		tableL.setRowFactory(tv -> {
+		    TableRow<FoodItem> row = new TableRow<>();
+		    row.setOnMouseClicked(event -> {
+		        if (event.getClickCount() == 2 && (!row.isEmpty())) {
+		            FoodItem selectedFood = row.getItem();
+		            mealList.add(selectedFood);
+		        }
+		    });
+		    return row;
+		});
 		return tableL;
 	}
 
@@ -198,6 +211,7 @@ public class UiComponents {
 		TableView<FoodItem> table = new TableView<FoodItem>();
 		TableColumn<FoodItem, String> mealColumn = new TableColumn<FoodItem, String>("Meal");
 		mealColumn.setCellValueFactory(new PropertyValueFactory<>("name"));
+	    table.setItems(mealList);
 		table.getColumns().add(mealColumn);
 		return table;
 	}

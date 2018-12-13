@@ -79,7 +79,15 @@ public class FoodData implements FoodDataADT<FoodItem> {
      */
     @Override
     public List<FoodItem> filterByNutrients(List<String> rules) {
-        // TODO : Complete
+        BPTree calories = new BPTree(3);
+        BPTree fat = new BPTree(3);
+        BPTree carbohydrate = new BPTree(3);
+        BPTree fiber = new BPTree(3);
+        BPTree protein = new BPTree(3);
+        
+        //add the nutrients from the hashmap to the BPTrees 
+        for ( HashMap<String, BPTree<Double, FoodItem>> indexes)
+        
         return null;
     }
 
@@ -89,7 +97,7 @@ public class FoodData implements FoodDataADT<FoodItem> {
      */
     @Override
     public void addFoodItem(FoodItem foodItem) {
-        // TODO : Complete
+       
         foodItemList.add(foodItem);
     }
     
