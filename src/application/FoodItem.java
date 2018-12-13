@@ -28,6 +28,7 @@ public class FoodItem {
         // TODO : Complete
     	this.name = name;
     	this.id = id;
+    	this.nutrients = new HashMap<String,Double>();
     }
     
     /**

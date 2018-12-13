@@ -1,3 +1,8 @@
+package application;
+
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.io.*;
@@ -21,7 +26,8 @@ public class FoodData implements FoodDataADT<FoodItem> {
      * Public constructor
      */
     public FoodData() {
-        
+    	this.foodItemList = new ArrayList<FoodItem>();
+    	this.indexes = new HashMap<String, BPTree<Double, FoodItem>>();
     }
     
     
@@ -31,12 +37,11 @@ public class FoodData implements FoodDataADT<FoodItem> {
      */
     @Override
     public void loadFoodItems(String filePath) {
-        // TODO : Complete
         try {
             FileReader file = new FileReader(filePath);
             BufferedReader reader = new BufferedReader(file);
             String next = reader.readLine();
-            while(next != null && !next.equals("")) {
+            while(next != null && !next.equals("") && !next.equals(",,,,,,,,,,,")) {
                 String [] data = next.split(",");
             
                 FoodItem foodItem = new FoodItem(data[0] , data[1]);
@@ -49,7 +54,6 @@ public class FoodData implements FoodDataADT<FoodItem> {
             }
         }
         catch(IOException e) {
-            e.printStackTrace();
             System.out.println("exception was thrown.");
         }
     }
@@ -95,10 +99,11 @@ public class FoodData implements FoodDataADT<FoodItem> {
      */
     @Override
     public List<FoodItem> getAllFoodItems() {
-        // TODO : Complete
         return foodItemList;
     }
+    
     public void saveFoodItems(String filename) {
+    	try {
         BufferedWriter writer = new BufferedWriter(new FileWriter(filename));
         for (FoodItem temp : foodItemList) {
             writer.write(temp.getID() + ",");
@@ -111,6 +116,9 @@ public class FoodData implements FoodDataADT<FoodItem> {
             writer.newLine();
         }
         writer.close();
-    }
+    	} catch(IOException e) {
+    		//THROW ERROR MESSAGE
+    	}
+    }   
 
 }
