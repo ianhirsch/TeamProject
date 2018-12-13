@@ -5,6 +5,8 @@ import java.nio.file.Paths;
 import java.util.ArrayList;
 
 import javafx.beans.binding.Bindings;
+import javafx.beans.property.ReadOnlyObjectWrapper;
+import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -20,6 +22,7 @@ import javafx.scene.control.Menu;
 import javafx.scene.control.MenuBar;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableRow;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.ColumnConstraints;
@@ -34,11 +37,11 @@ import javafx.stage.Stage;
 
 public class UiComponents {
 
-	private String filePath;
+	public String filePath;
 	private GridPane grid;
-	private ObservableList<FoodItem> foodList;
-	private ObservableList<FoodItem> mealList;
-	private ObservableValue<String> foodCount;
+	public ObservableList<FoodItem> foodList = FXCollections.observableArrayList();;
+	public ObservableList<FoodItem> mealList = FXCollections.observableArrayList();;
+	public ObservableList<Integer> foodCount = FXCollections.observableArrayList();;;
 
 	public UiComponents(Stage stage) {
 		this.grid = new GridPane();
@@ -65,9 +68,9 @@ public class UiComponents {
 		grid.add(planMealLabel(), 0, 0);
 		grid.add(filterFoodBtn, 1, 0);
 		grid.add(addFoodBtn, 0, 4);
-		grid.add(foodCountLabel(), 0, 1);
 		grid.add(clickLabel(), 1, 1);
 		grid.add(foodItemList(), 0, 2);
+		grid.add(foodCountLabel(), 0, 1);
 		grid.add(mealList(), 1, 2);
 		grid.add(loadFoodButton(stage), 0, 3);
 		grid.add(analyzeMealButton(stage), 1, 3);
@@ -82,8 +85,7 @@ public class UiComponents {
 	}
 
 	private Label foodCountLabel() {
-		Label labelL = new Label("There are 250 food items");
-		//labelL.textProperty().bind(foodCount);;
+		Label labelL = new Label("There are " + foodCount + " food items");
 		labelL.setPadding(new Insets(2,2,2,2)); 
 		labelL.setStyle("-fx-background-color: Gainsboro;-fx-border-color: black;");
 		return labelL;
@@ -116,7 +118,7 @@ public class UiComponents {
 		                dialogVbox.getChildren().add(new Text("Number of Foods in Meal: " + mealList.size() + 
 		                		"\n" + "Total Calories: " + totalCalories + "\n" + "Total Fat: " + totalFat +  "\n" 
 		                		+ "Total Carbohydrates: " + totalCarbohydrates + "\n" + "Total Fiber: " + totalFiber
-		                		+ "\n" + "Total Protein " + totalProtein + "\n\n" + "END OF ANALYSIS"));
+		                		+ "\n" + "Total Protein: " + totalProtein + "\n\n" + "END OF ANALYSIS"));
 		                Scene dialogScene = new Scene(dialogVbox, 300, 200);
 		                dialog.setScene(dialogScene);
 		                dialog.show();
@@ -126,7 +128,7 @@ public class UiComponents {
 	}
 
 	private Label clickLabel() {
-		Label label = new Label("\u2193 Click foods to add them to a meal \u2193");
+		Label label = new Label("\u2193 Double Click to add foods to a meal \u2193");
 		label.setTextFill(Color.RED);
 		label.setPadding(new Insets(5,5,5,5));  
 		GridPane.setHalignment(label, HPos.CENTER);
@@ -158,6 +160,15 @@ public class UiComponents {
 				File f = fChoose.showOpenDialog(stage);
 				if (f != null) {
 					filePath = f.getPath();
+					FoodData fd = new FoodData();
+					fd.loadFoodItems(filePath);
+					foodList.remove(0, foodList.size()-1);
+					for (FoodItem foodItem : fd.getAllFoodItems()) {
+						foodList.add(foodItem);
+					}
+					foodCount.remove(0);
+					foodCount.add(foodList.size());
+					mealList.remove(0, mealList.size()-1);
 				}
 			}
 		});
@@ -180,18 +191,30 @@ public class UiComponents {
 		TableView<FoodItem> tableL = new TableView<FoodItem>();
 		TableColumn<FoodItem, String> foodColumn = new TableColumn<FoodItem, String>("Food");
 		foodColumn.setSortType(TableColumn.SortType.DESCENDING);
+		//foodColumn.
 
 		FoodData initialFoodData = new FoodData();
 		initialFoodData.loadFoodItems(Paths.get(System.getProperty("user.dir"), "foodItems.csv").toString());
 		
-		final ObservableList<FoodItem> foodList = FXCollections.observableArrayList();
+		//ObservableList<FoodItem> mealList = FXCollections.observableArrayList();
 		for (FoodItem foodItem : initialFoodData.getAllFoodItems()) {
 			foodList.add(foodItem);
 		}
 
 		foodColumn.setCellValueFactory( new PropertyValueFactory<>("name"));
 		tableL.setItems(foodList);
+		foodCount.add(tableL.getItems().size());
 		tableL.getColumns().add(foodColumn);
+		tableL.setRowFactory(tv -> {
+		    TableRow<FoodItem> row = new TableRow<>();
+		    row.setOnMouseClicked(event -> {
+		        if (event.getClickCount() == 2 && (!row.isEmpty())) {
+		            FoodItem selectedFood = row.getItem();
+		            mealList.add(selectedFood);
+		        }
+		    });
+		    return row;
+		});
 		return tableL;
 	}
 
@@ -199,6 +222,7 @@ public class UiComponents {
 		TableView<FoodItem> table = new TableView<FoodItem>();
 		TableColumn<FoodItem, String> mealColumn = new TableColumn<FoodItem, String>("Meal");
 		mealColumn.setCellValueFactory(new PropertyValueFactory<>("name"));
+	    table.setItems(mealList);
 		table.getColumns().add(mealColumn);
 		return table;
 	}
