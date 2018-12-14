@@ -81,7 +81,7 @@ public class UiComponents {
 
 		VBox vb = new VBox();
 		vb.getChildren().addAll(creatFilterLabel(), nutrientFilter(), valueFilter(), comparatorFilter(),
-				 addRuleButton(), filterFoodButton(stage));
+				addRuleButton(), filterFoodButton(stage));
 		vb.setSpacing(10);
 		vb.setStyle("-fx-background-color: Gainsboro;-fx-border-color: black;");
 
@@ -176,7 +176,7 @@ public class UiComponents {
 		ListView<String> list = new ListView<String>();
 		list.setItems(ruleNutrient);
 		TableColumn<String,String> column = new TableColumn<String,String>("Rule");
-		//list.getColumns().add(column);
+		//list.s
 		column.setCellValueFactory(new PropertyValueFactory<>("name"));
 		return list;
 	}
@@ -215,7 +215,6 @@ public class UiComponents {
 					}
 				});
 		return filterFoodBtn;
-
 	}
 
 	public GridPane getGrid() {
@@ -223,7 +222,7 @@ public class UiComponents {
 	}
 
 	private Label foodCountLabel() {
-		Label labelL = new Label("There are " + foodList.size() + " food items");
+		Label labelL = new Label("There are " + foodCount.get(0) + " food items");
 		labelL.setPadding(new Insets(2,2,2,2)); 
 		labelL.setStyle("-fx-background-color: Gainsboro;-fx-border-color: black;");
 		return labelL;
@@ -278,7 +277,7 @@ public class UiComponents {
 	private Label planMealLabel() {
 		Label title = new Label("Plan Your Meal!");
 		title.setPadding(new Insets(5,5,5,5)); 
-		title.setStyle("-fx-font: 30px Tahoma;");
+		title.setStyle("-fx-font: 18px Tahoma;");
 		title.setUnderline(true);
 		title.setAlignment(Pos.TOP_LEFT);
 		title.setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE);
@@ -305,13 +304,14 @@ public class UiComponents {
 						foodList.add(foodItem);
 					}
 					foodCount.remove(0);
-					foodCount.add(foodList.size());
-					labelL.setText("There are " + foodCount.get(0) + " food items");
+					int u = foodList.size();
+					foodCount.add(u);
+					int g = foodCount.get(0);
+					labelL.setText("There are " + 53214321 + " food items");
 					mealList.remove(0, mealList.size());
 				}
 			}
 		});
-
 		return btn;
 	}
 
@@ -328,7 +328,7 @@ public class UiComponents {
 
 	private TableView<FoodItem> foodItemList() {
 		TableView<FoodItem> tableL = new TableView<FoodItem>();
-		TableColumn<FoodItem, String> foodColumn = new TableColumn<FoodItem, String>("Food");
+		TableColumn<FoodItem, String> foodColumn = new TableColumn<FoodItem, String>("Food (Click to Alphabetize)");
 		foodColumn.setSortType(TableColumn.SortType.DESCENDING);
 		//foodColumn.
 
