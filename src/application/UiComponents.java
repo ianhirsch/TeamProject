@@ -87,7 +87,7 @@ public class UiComponents {
 		vb.setStyle("-fx-background-color: Gainsboro;-fx-border-color: black;");
 
 		grid.add(planMealLabel(), 0, 0);
-		grid.add(addFoodBtn, 1, 1);
+		grid.add(addFoodMenu(stage), 1, 1);
 		grid.add(clickLabel(), 2, 1);
 		grid.add(foodItemList(), 1, 2);
 		grid.add(foodCountLabel(), 1, 0);
@@ -305,10 +305,8 @@ public class UiComponents {
 						foodList.add(foodItem);
 					}
 					foodCount.remove(0);
-					int u = foodList.size();
-					foodCount.add(u);
-					int g = foodCount.get(0);
-					labelL.setText("There are " + 53214321 + " food items");
+					foodCount.add(foodList.size());					
+					labelL.setText("There are " + foodCount.get(0) + " food items");
 					mealList.remove(0, mealList.size());
 				}
 			}
@@ -374,7 +372,9 @@ public class UiComponents {
 							fi.addNutrient("Fiber", Double.parseDouble(fiberText.getText()));
 							fi.addNutrient("Protein", Double.parseDouble(proteinText.getText()));
 							foodList.add(fi);
+							foodCount.remove(0);
 							foodCount.add(foodList.size());
+							labelL.setText("There are " + foodCount.get(0) + " food items");
 							dialog.close();
 						}
 					});
@@ -392,7 +392,6 @@ public class UiComponents {
 		TableView<FoodItem> tableL = new TableView<FoodItem>();
 		TableColumn<FoodItem, String> foodColumn = new TableColumn<FoodItem, String>("Food (Click to Alphabetize)");
 		foodColumn.setSortType(TableColumn.SortType.DESCENDING);
-		//foodColumn.
 
 		FoodData initialFoodData = new FoodData();
 		initialFoodData.loadFoodItems(Paths.get(System.getProperty("user.dir"), "foodItems.csv").toString());
