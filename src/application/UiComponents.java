@@ -5,6 +5,8 @@ import java.nio.file.Paths;
 import java.util.ArrayList;
 
 import javafx.beans.binding.Bindings;
+import javafx.beans.property.ReadOnlyObjectWrapper;
+import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -37,11 +39,12 @@ import javafx.stage.Stage;
 
 public class UiComponents {
 
-	private String filePath;
+	public String filePath;
 	private GridPane grid;
 	public ObservableList<FoodItem> foodList = FXCollections.observableArrayList();
 	public ObservableList<FoodItem> mealList = FXCollections.observableArrayList();
-	private ObservableValue<String> foodCount;
+	public ObservableList<Integer> foodCount = FXCollections.observableArrayList();
+	public Label labelL = new Label();
 
 	public UiComponents(Stage stage) {
 		this.grid = new GridPane();
@@ -67,17 +70,18 @@ public class UiComponents {
 		grid.setVgap(10);
 		grid.setPadding(new Insets(10, 10, 10, 10));
 
+
 		grid.add(planMealLabel(), 1, 0);
 		grid.add(filterFoodButton(stage), 2, 4);
 		grid.add(addFoodBtn, 1, 4);
 		grid.add(clickLabel(), 2, 1);
 		grid.add(foodItemList(), 1, 2);
+		grid.add(foodCountLabel(), 1, 1);
 		grid.add(mealList(), 2, 2);
-	    grid.add(foodCountLabel(), 1, 1);
 		grid.add(loadFoodButton(stage), 1, 3);
 		grid.add(analyzeMealButton(stage), 2, 3);
 		grid.add(radioButton(stage), 0, 2);
-		
+
 	}
 		public VBox radioButton(Stage primaryStage ) {
 		    ToggleGroup group = new ToggleGroup();
@@ -138,7 +142,6 @@ public class UiComponents {
 
 	private Label foodCountLabel() {
 		Label labelL = new Label("There are " + foodList.size() + " food items");
-		//labelL.textProperty().bind(foodCount);;
 		labelL.setPadding(new Insets(2,2,2,2)); 
 		labelL.setStyle("-fx-background-color: Gainsboro;-fx-border-color: black;");
 		return labelL;
@@ -205,13 +208,24 @@ public class UiComponents {
 		btn.setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE);
 
 		final FileChooser fChoose = new FileChooser();
-		fChoose.getExtensionFilters().add( new FileChooser.ExtensionFilter("CSV", "*.csv"));
+		fChoose.getExtensionFilters().addAll( new FileChooser.ExtensionFilter("CSV", "*.csv"),
+				new FileChooser.ExtensionFilter("TXT", "*.txt"));
 		btn.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(final ActionEvent e) {
 				File f = fChoose.showOpenDialog(stage);
 				if (f != null) {
 					filePath = f.getPath();
+					FoodData fd = new FoodData();
+					fd.loadFoodItems(filePath);
+					foodList.remove(0, foodList.size()-1);
+					for (FoodItem foodItem : fd.getAllFoodItems()) {
+						foodList.add(foodItem);
+					}
+					foodCount.remove(0);
+					foodCount.add(foodList.size());
+					labelL.setText("There are " + foodCount.get(0) + " food items");
+					mealList.remove(0, mealList.size());
 				}
 			}
 		});
@@ -239,15 +253,13 @@ public class UiComponents {
 		FoodData initialFoodData = new FoodData();
 		initialFoodData.loadFoodItems(Paths.get(System.getProperty("user.dir"), "foodItems.csv").toString());
 		
-		//final ObservableList<FoodItem> foodList = FXCollections.observableArrayList();
-		//ObservableList<FoodItem> mealList = FXCollections.observableArrayList();
-		
 		for (FoodItem foodItem : initialFoodData.getAllFoodItems()) {
 			foodList.add(foodItem);
 		}
 
 		foodColumn.setCellValueFactory( new PropertyValueFactory<>("name"));
 		tableL.setItems(foodList);
+		foodCount.add(initialFoodData.getAllFoodItems().size());
 		tableL.getColumns().add(foodColumn);
 		tableL.setRowFactory(tv -> {
 		    TableRow<FoodItem> row = new TableRow<>();

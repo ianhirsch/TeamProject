@@ -196,16 +196,10 @@ public class BPTree<K extends Comparable<K>, V> implements BPTreeADT<K, V> {
 	} // End of abstract class Node
 
 	/**
-<<<<<<< HEAD
-	 * This class represents an internal node of the tree. This class is a concrete
-	 * sub class of the abstract Node class and provides implementation of the
-	 * operations required for internal (non-leaf) nodes.
-=======
 	 * This class represents an internal node of the tree.
 	 * This class is a concrete sub class of the abstract Node class
 	 * and provides implementation of the operations
 	 * required for internal (non-leaf) nodes.
->>>>>>> 3379665b4d370b6b569a904563e64e4fa492c22b
 	 * 
 	 * @author sapan
 	 */
@@ -224,10 +218,6 @@ public class BPTree<K extends Comparable<K>, V> implements BPTreeADT<K, V> {
 
 		/**
 		 * (non-Javadoc)
-<<<<<<< HEAD
-		 * 
-=======
->>>>>>> 3379665b4d370b6b569a904563e64e4fa492c22b
 		 * @see BPTree.Node#getFirstLeafKey()
 		 */
 		K getFirstLeafKey() {
@@ -236,10 +226,6 @@ public class BPTree<K extends Comparable<K>, V> implements BPTreeADT<K, V> {
 
 		/**
 		 * (non-Javadoc)
-<<<<<<< HEAD
-		 * 
-=======
->>>>>>> 3379665b4d370b6b569a904563e64e4fa492c22b
 		 * @see BPTree.Node#isOverflow()
 		 */
 		boolean isOverflow() {
@@ -354,9 +340,6 @@ public class BPTree<K extends Comparable<K>, V> implements BPTreeADT<K, V> {
 			LeafNode leafs =  (BPTree<K, V>.LeafNode) treeTraverser;
 
 			return leafs.rangeSearch(key, comparator);
-
-			
-			
 		}
 	}
 	
@@ -367,7 +350,6 @@ public class BPTree<K extends Comparable<K>, V> implements BPTreeADT<K, V> {
 		 * This class is a concrete sub class of the abstract Node class
 		 * and provides implementation of the operations that
 		 * required for leaf nodes.
->>>>>>> 3379665b4d370b6b569a904563e64e4fa492c22b
 		 * 
 		 * @author sapan
 		 */
@@ -393,11 +375,6 @@ public class BPTree<K extends Comparable<K>, V> implements BPTreeADT<K, V> {
 			/**
 			 * (non-Javadoc)
 			 * 
-=======
-
-			/**
-			 * (non-Javadoc)
->>>>>>> 3379665b4d370b6b569a904563e64e4fa492c22b
 			 * @see BPTree.Node#getFirstLeafKey()
 			 */
 			K getFirstLeafKey() {
