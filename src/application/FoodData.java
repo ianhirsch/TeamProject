@@ -4,7 +4,10 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
 import java.io.*;
 
 /**
@@ -28,6 +31,7 @@ public class FoodData implements FoodDataADT<FoodItem> {
     public FoodData() {
     	this.foodItemList = new ArrayList<FoodItem>();
     	this.indexes = new HashMap<String, BPTree<Double, FoodItem>>();
+    	BPTree holderTree = new BPTree(3);
     }
     
     
@@ -49,6 +53,27 @@ public class FoodData implements FoodDataADT<FoodItem> {
                 for (int i = 2; i < data.length; i = i + 2){
                     foodItem.addNutrient(data[i], Double.parseDouble(data[i + 1]));
                 }
+                //hash the nutrient type, divide it by the number of nutrients. then add it to the indexes bp tree
+                
+                
+                    Iterator it = foodItem.getNutrients().entrySet().iterator();
+                    
+                    while(it.hasNext()) {
+                       Map.Entry pair = (Entry) it.next();
+                       if(pair.getKey() == "fiber") {
+                          double holder = (double) pair.getValue();
+                           indexes.put(pair.getKey().toString(), holderTree<holder, foodItem.getName()>);
+                       }
+                       
+                       }
+                       
+                       
+                       
+                        
+                        
+                    }
+                
+                
                 addFoodItem(foodItem);
                 next = reader.readLine();
             }
@@ -79,16 +104,58 @@ public class FoodData implements FoodDataADT<FoodItem> {
      */
     @Override
     public List<FoodItem> filterByNutrients(List<String> rules) {
-        BPTree calories = new BPTree(3);
-        BPTree fat = new BPTree(3);
-        BPTree carbohydrate = new BPTree(3);
-        BPTree fiber = new BPTree(3);
-        BPTree protein = new BPTree(3);
+        List<FoodItem> filteredListofFoods = new ArrayList<FoodItem>();
         
+<<<<<<< HEAD
+=======
         //add the nutrients from the hashmap to the BPTrees 
         for ( HashMap<String, BPTree<Double, FoodItem>> indexes) 
+>>>>>>> 66f3e33c7d2e2ca4580d05073c5e018e15463f00
         
-        return null;
+       String toBeSplit = rules.get(0);
+       
+       String[] splited = toBeSplit.split(" ");
+       
+       String nutrient = splited[0].toString();
+       String comparator = splited[1].toString();
+       Double value = Double.parseDouble(splited[2]);
+        
+       int hashmapLocation = nutrient.hashCode() % 5;
+       
+       filteredListofFoods = indexes.get(hashmapLocation).rangeSearch(value, comparator); //performs a rangeSearch on the hashMap of given nutrient
+       int i =1;
+       while(!(rules.get(i).isEmpty())){
+           
+           List<FoodItem> newRuleList = new ArrayList<FoodItem>();
+           
+           String toBeSplitIteration = rules.get(i); //splits next rule
+           
+           String[] splitedIteration = toBeSplitIteration.split("\\s+");
+           
+           String nutrientIteration = splitedIteration[0].toString();
+           String comparatorIteration = splited[1].toString();
+           Double valueIteration = Double.parseDouble(splited[2]);
+           
+           int hashmapLocationIteration = nutrientIteration.hashCode();
+            newRuleList = indexes.get(hashmapLocationIteration).rangeSearch(valueIteration, comparatorIteration);
+            
+            List<FoodItem> temporaryHolder = new ArrayList<FoodItem>();
+            
+            for (FoodItem temp : filteredListofFoods) {
+                if (newRuleList.contains(temp)) {
+                    temporaryHolder.add(temp);
+                    }
+            }
+            
+            filteredListofFoods = temporaryHolder;
+            
+            i = i+1;
+          
+       }
+       
+       
+       return filteredListofFoods;
+        
     }
 
     /*

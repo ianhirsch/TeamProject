@@ -203,16 +203,12 @@ public class UiComponents {
 				new EventHandler<ActionEvent>() {
 					@Override
 					public void handle(ActionEvent event) {
-
-						final Stage dialog = new Stage();
-						dialog.initModality(Modality.APPLICATION_MODAL);
-						dialog.initOwner(primaryStage);
-						VBox dialogVbox = new VBox(20);
-						Button enter = new Button("enter value");
-						dialogVbox.getChildren().addAll(new Text("Number of Foods in Meal: " ), enter);
-						Scene dialogScene = new Scene(dialogVbox, 300, 200);
-						dialog.setScene(dialogScene);
-						dialog.show();
+					    //passTheList into the darnit and make the list popup in the darnit
+					    foodList.remove(0, foodList.size());
+					    FoodData fd = new FoodData();
+					    foodList.addAll(fd.filterByNutrients(ruleNutrient));
+					    foodCount.add(foodList.size());
+						
 					}
 				});
 		return filterFoodBtn;
