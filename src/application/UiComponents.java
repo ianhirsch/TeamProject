@@ -18,10 +18,12 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.Menu;
 import javafx.scene.control.MenuBar;
+import javafx.scene.control.RadioButton;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableRow;
 import javafx.scene.control.TableView;
+import javafx.scene.control.ToggleGroup;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.GridPane;
@@ -37,8 +39,8 @@ public class UiComponents {
 
 	private String filePath;
 	private GridPane grid;
-	private ObservableList<FoodItem> foodList;
-	public ObservableList<FoodItem> mealList = FXCollections.observableArrayList();;
+	public ObservableList<FoodItem> foodList = FXCollections.observableArrayList();
+	public ObservableList<FoodItem> mealList = FXCollections.observableArrayList();
 	private ObservableValue<String> foodCount;
 
 	public UiComponents(Stage stage) {
@@ -49,41 +51,93 @@ public class UiComponents {
 	public void createScene(Stage stage) {
 
 		ColumnConstraints column1 = new ColumnConstraints();
-		column1.setPercentWidth(50);
+		column1.setPercentWidth(20);
 		ColumnConstraints column2 = new ColumnConstraints();
-		column2.setPercentWidth(50);
+		column2.setPercentWidth(40);
+		ColumnConstraints column3 = new ColumnConstraints();
+        column3.setPercentWidth(40);
 		
-		Button filterFoodBtn = new Button("Filter Food");
+		
 		Button addFoodBtn = new Button("Add Food");	
-		filterFoodBtn.setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE);
+		
 		addFoodBtn.setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE);
 
-		grid.getColumnConstraints().addAll(column1, column2);
+		grid.getColumnConstraints().addAll(column1, column2, column3);
 		grid.setHgap(10); 
 		grid.setVgap(10);
 		grid.setPadding(new Insets(10, 10, 10, 10));
 
-		grid.add(planMealLabel(), 0, 0);
-		grid.add(filterFoodBtn, 1, 0);
-		grid.add(addFoodBtn, 0, 4);
-		grid.add(foodCountLabel(), 0, 1);
-		grid.add(clickLabel(), 1, 1);
-		grid.add(foodItemList(), 0, 2);
-		grid.add(mealList(), 1, 2);
-		grid.add(loadFoodButton(stage), 0, 3);
-		grid.add(analyzeMealButton(stage), 1, 3);
+		grid.add(planMealLabel(), 1, 0);
+		grid.add(filterFoodButton(stage), 2, 4);
+		grid.add(addFoodBtn, 1, 4);
+		grid.add(clickLabel(), 2, 1);
+		grid.add(foodItemList(), 1, 2);
+		grid.add(mealList(), 2, 2);
+	    grid.add(foodCountLabel(), 1, 1);
+		grid.add(loadFoodButton(stage), 1, 3);
+		grid.add(analyzeMealButton(stage), 2, 3);
+		grid.add(radioButton(stage), 0, 2);
+		
 	}
+		public VBox radioButton(Stage primaryStage ) {
+		    ToggleGroup group = new ToggleGroup();
+	        RadioButton calories = new RadioButton("Calories");
+	        RadioButton fat = new RadioButton("Fat");
+	        RadioButton carbohydrate = new RadioButton("Carbohydrate");
+	        RadioButton fiber = new RadioButton("fiber");
+	        RadioButton protein = new RadioButton("protein");
+	        
+	        calories.setToggleGroup(group);
+	        fat.setToggleGroup(group);
+	        carbohydrate.setToggleGroup(group);
+	        fiber.setToggleGroup(group);
+	        protein.setToggleGroup(group);
+		    
+		    VBox vb = new VBox();
+		    vb.setPadding(new Insets(40, 0, 0, 0));
+		    vb.setSpacing(20);
 
-//	public Button filterFoodButton() {
-//
-//	}
+		    vb.getChildren().addAll(calories, fat, carbohydrate, fiber, protein);
+		    
+		    return vb;
+		}
+		
+		
+		
+		
+	
+
+    
+
+	public Button filterFoodButton(Stage primaryStage) {
+	    Button filterFoodBtn = new Button("Filter Food");
+	    filterFoodBtn.setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE);
+	    filterFoodBtn.setOnAction(
+            new EventHandler<ActionEvent>() {
+                @Override
+                public void handle(ActionEvent event) {
+                   
+                    final Stage dialog = new Stage();
+                    dialog.initModality(Modality.APPLICATION_MODAL);
+                    dialog.initOwner(primaryStage);
+                    VBox dialogVbox = new VBox(20);
+                    Button enter = new Button("enter value");
+                    dialogVbox.getChildren().addAll(new Text("Number of Foods in Meal: " ), enter);
+                    Scene dialogScene = new Scene(dialogVbox, 300, 200);
+                    dialog.setScene(dialogScene);
+                    dialog.show();
+                }
+             });
+	    return filterFoodBtn;
+	
+	}
 	
 	public GridPane getGrid() {
 		return grid;
 	}
 
 	private Label foodCountLabel() {
-		Label labelL = new Label("There are 250 food items");
+		Label labelL = new Label("There are " + foodList.size() + " food items");
 		//labelL.textProperty().bind(foodCount);;
 		labelL.setPadding(new Insets(2,2,2,2)); 
 		labelL.setStyle("-fx-background-color: Gainsboro;-fx-border-color: black;");
@@ -127,7 +181,7 @@ public class UiComponents {
 	}
 
 	private Label clickLabel() {
-		Label label = new Label("\u2193 Click foods to add them to a meal \u2193");
+		Label label = new Label("\u2193 Double-Click to add foods to a meal \u2193");
 		label.setTextFill(Color.RED);
 		label.setPadding(new Insets(5,5,5,5));  
 		GridPane.setHalignment(label, HPos.CENTER);
@@ -185,8 +239,9 @@ public class UiComponents {
 		FoodData initialFoodData = new FoodData();
 		initialFoodData.loadFoodItems(Paths.get(System.getProperty("user.dir"), "foodItems.csv").toString());
 		
-		final ObservableList<FoodItem> foodList = FXCollections.observableArrayList();
+		//final ObservableList<FoodItem> foodList = FXCollections.observableArrayList();
 		//ObservableList<FoodItem> mealList = FXCollections.observableArrayList();
+		
 		for (FoodItem foodItem : initialFoodData.getAllFoodItems()) {
 			foodList.add(foodItem);
 		}
