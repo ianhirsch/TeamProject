@@ -41,6 +41,7 @@ import javafx.scene.text.Text;
 import javafx.stage.FileChooser;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+import javafx.scene.control.TextField;
 
 public class UiComponents {
 
@@ -315,16 +316,77 @@ public class UiComponents {
 		return btn;
 	}
 
-	//	public Button addFoodMenu() {
-	//		Button addFood = new Button("Add Food");
-	//		addFood.setOnAction(new EventHandler<ActionEvent>() {
-	//			@Override
-	//			public void handle(final ActionEvent e) {
-	//				
-	//			}
-	//				
-	//		});
-	//	}
+	public Button addFoodMenu(final Stage primaryStage) {
+		Button addFood = new Button("Add Food");
+		addFood.setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE);
+		
+		addFood.setOnAction(new EventHandler<ActionEvent>() {
+			@Override
+			public void handle(final ActionEvent e) {
+				 final Stage dialog = new Stage();
+				 dialog.initModality(Modality.APPLICATION_MODAL);
+				 dialog.initOwner(primaryStage);
+				 VBox dialogVbox = new VBox(20);
+				 
+				 VBox idBox = new VBox();
+				 VBox foodNameBox = new VBox();
+				 VBox calorieBox = new VBox();
+				 VBox proteinBox = new VBox();
+				 VBox carbBox = new VBox();
+				 VBox fatBox = new VBox();
+				 VBox fiberBox = new VBox();
+				 
+				 TextField idText = new TextField();
+				 TextField foodNameText = new TextField();
+				 TextField calorieText = new TextField();
+				 TextField proteinText = new TextField();
+				 TextField carbText = new TextField();
+				 TextField fatText = new TextField();
+				 TextField fiberText = new TextField();
+				 
+				 Button btn = new Button("Add Food");
+				 
+				 
+				 idBox.getChildren().addAll(new Text("Food ID"), idText);
+				 foodNameBox.getChildren().addAll(new Text("Food Name"), foodNameText);
+				 calorieBox.getChildren().addAll(new Text("Calories"), calorieText);
+				 proteinBox.getChildren().addAll(new Text("Protein"), proteinText);
+				 carbBox.getChildren().addAll(new Text("Carbohydrates"), carbText);
+				 fatBox.getChildren().addAll(new Text("Fat"), fatText);
+				 fiberBox.getChildren().addAll(new Text("Fiber"), fiberText);
+				 
+				 dialogVbox.getChildren().addAll(idBox);
+				 dialogVbox.getChildren().addAll(foodNameBox);
+				 dialogVbox.getChildren().addAll(calorieBox);
+				 dialogVbox.getChildren().addAll(proteinBox);
+				 dialogVbox.getChildren().addAll(carbBox);
+				 dialogVbox.getChildren().addAll(fatBox);
+				 dialogVbox.getChildren().addAll(fiberBox); 
+				 dialogVbox.getChildren().addAll(btn); 
+				 
+				 btn.setOnAction(new EventHandler<ActionEvent>() {
+						@Override
+						public void handle(final ActionEvent e) {
+							FoodItem fi = new FoodItem(idText.getText(), foodNameText.getText());
+							fi.addNutrient("Calories", Double.parseDouble(calorieText.getText()));
+							fi.addNutrient("Fat", Double.parseDouble(fatText.getText()));
+							fi.addNutrient("Carbohydrate", Double.parseDouble(carbText.getText()));
+							fi.addNutrient("Fiber", Double.parseDouble(fiberText.getText()));
+							fi.addNutrient("Protein", Double.parseDouble(proteinText.getText()));
+							foodList.add(fi);
+							foodCount.add(foodList.size());
+							dialog.close();
+						}
+					});
+				 
+				 Scene dialogScene = new Scene(dialogVbox, 350, 600);
+				 dialog.setScene(dialogScene);
+				 dialog.show();
+			}
+				
+		});
+		return addFood;
+	}
 
 	private TableView<FoodItem> foodItemList() {
 		TableView<FoodItem> tableL = new TableView<FoodItem>();
