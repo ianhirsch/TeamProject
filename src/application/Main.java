@@ -172,7 +172,7 @@ public class Main extends Application {
 //			grid.add(analyzeMealButton, 1, 3);
 //			//
 			
-			Scene scene = new Scene(ui.getGrid(), 550, 550);
+			Scene scene = new Scene(ui.getGrid(), 750, 550);
 			primaryStage.setTitle("Meal Planner");
 			primaryStage.setScene(scene);
 			primaryStage.show();
