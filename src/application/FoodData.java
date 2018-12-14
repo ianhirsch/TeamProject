@@ -106,6 +106,11 @@ public class FoodData implements FoodDataADT<FoodItem> {
     public List<FoodItem> filterByNutrients(List<String> rules) {
         List<FoodItem> filteredListofFoods = new ArrayList<FoodItem>();
         
+<<<<<<< HEAD
+=======
+        //add the nutrients from the hashmap to the BPTrees 
+        for ( HashMap<String, BPTree<Double, FoodItem>> indexes) 
+>>>>>>> 66f3e33c7d2e2ca4580d05073c5e018e15463f00
         
        String toBeSplit = rules.get(0);
        

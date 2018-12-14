@@ -41,6 +41,7 @@ import javafx.scene.text.Text;
 import javafx.stage.FileChooser;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+import javafx.scene.control.TextField;
 
 public class UiComponents {
 
@@ -81,7 +82,7 @@ public class UiComponents {
 
 		VBox vb = new VBox();
 		vb.getChildren().addAll(creatFilterLabel(), nutrientFilter(), valueFilter(), comparatorFilter(),
-				 addRuleButton(), filterFoodButton(stage));
+				addRuleButton(), filterFoodButton(stage));
 		vb.setSpacing(10);
 		vb.setStyle("-fx-background-color: Gainsboro;-fx-border-color: black;");
 
@@ -176,7 +177,7 @@ public class UiComponents {
 		ListView<String> list = new ListView<String>();
 		list.setItems(ruleNutrient);
 		TableColumn<String,String> column = new TableColumn<String,String>("Rule");
-		//list.getColumns().add(column);
+		//list.s
 		column.setCellValueFactory(new PropertyValueFactory<>("name"));
 		return list;
 	}
@@ -211,7 +212,6 @@ public class UiComponents {
 					}
 				});
 		return filterFoodBtn;
-
 	}
 
 	public GridPane getGrid() {
@@ -219,7 +219,7 @@ public class UiComponents {
 	}
 
 	private Label foodCountLabel() {
-		Label labelL = new Label("There are " + foodList.size() + " food items");
+		Label labelL = new Label("There are " + foodCount.get(0) + " food items");
 		labelL.setPadding(new Insets(2,2,2,2)); 
 		labelL.setStyle("-fx-background-color: Gainsboro;-fx-border-color: black;");
 		return labelL;
@@ -274,7 +274,7 @@ public class UiComponents {
 	private Label planMealLabel() {
 		Label title = new Label("Plan Your Meal!");
 		title.setPadding(new Insets(5,5,5,5)); 
-		title.setStyle("-fx-font: 30px Tahoma;");
+		title.setStyle("-fx-font: 18px Tahoma;");
 		title.setUnderline(true);
 		title.setAlignment(Pos.TOP_LEFT);
 		title.setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE);
@@ -301,30 +301,92 @@ public class UiComponents {
 						foodList.add(foodItem);
 					}
 					foodCount.remove(0);
-					foodCount.add(foodList.size());
-					labelL.setText("There are " + foodCount.get(0) + " food items");
+					int u = foodList.size();
+					foodCount.add(u);
+					int g = foodCount.get(0);
+					labelL.setText("There are " + 53214321 + " food items");
 					mealList.remove(0, mealList.size());
 				}
 			}
 		});
-
 		return btn;
 	}
 
-	//	public Button addFoodMenu() {
-	//		Button addFood = new Button("Add Food");
-	//		addFood.setOnAction(new EventHandler<ActionEvent>() {
-	//			@Override
-	//			public void handle(final ActionEvent e) {
-	//				
-	//			}
-	//				
-	//		});
-	//	}
+	public Button addFoodMenu(final Stage primaryStage) {
+		Button addFood = new Button("Add Food");
+		addFood.setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE);
+		
+		addFood.setOnAction(new EventHandler<ActionEvent>() {
+			@Override
+			public void handle(final ActionEvent e) {
+				 final Stage dialog = new Stage();
+				 dialog.initModality(Modality.APPLICATION_MODAL);
+				 dialog.initOwner(primaryStage);
+				 VBox dialogVbox = new VBox(20);
+				 
+				 VBox idBox = new VBox();
+				 VBox foodNameBox = new VBox();
+				 VBox calorieBox = new VBox();
+				 VBox proteinBox = new VBox();
+				 VBox carbBox = new VBox();
+				 VBox fatBox = new VBox();
+				 VBox fiberBox = new VBox();
+				 
+				 TextField idText = new TextField();
+				 TextField foodNameText = new TextField();
+				 TextField calorieText = new TextField();
+				 TextField proteinText = new TextField();
+				 TextField carbText = new TextField();
+				 TextField fatText = new TextField();
+				 TextField fiberText = new TextField();
+				 
+				 Button btn = new Button("Add Food");
+				 
+				 
+				 idBox.getChildren().addAll(new Text("Food ID"), idText);
+				 foodNameBox.getChildren().addAll(new Text("Food Name"), foodNameText);
+				 calorieBox.getChildren().addAll(new Text("Calories"), calorieText);
+				 proteinBox.getChildren().addAll(new Text("Protein"), proteinText);
+				 carbBox.getChildren().addAll(new Text("Carbohydrates"), carbText);
+				 fatBox.getChildren().addAll(new Text("Fat"), fatText);
+				 fiberBox.getChildren().addAll(new Text("Fiber"), fiberText);
+				 
+				 dialogVbox.getChildren().addAll(idBox);
+				 dialogVbox.getChildren().addAll(foodNameBox);
+				 dialogVbox.getChildren().addAll(calorieBox);
+				 dialogVbox.getChildren().addAll(proteinBox);
+				 dialogVbox.getChildren().addAll(carbBox);
+				 dialogVbox.getChildren().addAll(fatBox);
+				 dialogVbox.getChildren().addAll(fiberBox); 
+				 dialogVbox.getChildren().addAll(btn); 
+				 
+				 btn.setOnAction(new EventHandler<ActionEvent>() {
+						@Override
+						public void handle(final ActionEvent e) {
+							FoodItem fi = new FoodItem(idText.getText(), foodNameText.getText());
+							fi.addNutrient("Calories", Double.parseDouble(calorieText.getText()));
+							fi.addNutrient("Fat", Double.parseDouble(fatText.getText()));
+							fi.addNutrient("Carbohydrate", Double.parseDouble(carbText.getText()));
+							fi.addNutrient("Fiber", Double.parseDouble(fiberText.getText()));
+							fi.addNutrient("Protein", Double.parseDouble(proteinText.getText()));
+							foodList.add(fi);
+							foodCount.add(foodList.size());
+							dialog.close();
+						}
+					});
+				 
+				 Scene dialogScene = new Scene(dialogVbox, 350, 600);
+				 dialog.setScene(dialogScene);
+				 dialog.show();
+			}
+				
+		});
+		return addFood;
+	}
 
 	private TableView<FoodItem> foodItemList() {
 		TableView<FoodItem> tableL = new TableView<FoodItem>();
-		TableColumn<FoodItem, String> foodColumn = new TableColumn<FoodItem, String>("Food");
+		TableColumn<FoodItem, String> foodColumn = new TableColumn<FoodItem, String>("Food (Click to Alphabetize)");
 		foodColumn.setSortType(TableColumn.SortType.DESCENDING);
 		//foodColumn.
 
