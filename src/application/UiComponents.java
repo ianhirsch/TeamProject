@@ -39,9 +39,10 @@ public class UiComponents {
 
 	public String filePath;
 	private GridPane grid;
-	public ObservableList<FoodItem> foodList = FXCollections.observableArrayList();;
-	public ObservableList<FoodItem> mealList = FXCollections.observableArrayList();;
-	public ObservableList<Integer> foodCount = FXCollections.observableArrayList();;;
+	public ObservableList<FoodItem> foodList = FXCollections.observableArrayList();
+	public ObservableList<FoodItem> mealList = FXCollections.observableArrayList();
+	public ObservableList<Integer> foodCount = FXCollections.observableArrayList();
+	public Label labelL = new Label();
 
 	public UiComponents(Stage stage) {
 		this.grid = new GridPane();
@@ -85,7 +86,7 @@ public class UiComponents {
 	}
 
 	private Label foodCountLabel() {
-		Label labelL = new Label("There are " + foodCount + " food items");
+		labelL.setText( "There are " + foodCount.get(0) + " food items");
 		labelL.setPadding(new Insets(2,2,2,2)); 
 		labelL.setStyle("-fx-background-color: Gainsboro;-fx-border-color: black;");
 		return labelL;
@@ -168,7 +169,8 @@ public class UiComponents {
 					}
 					foodCount.remove(0);
 					foodCount.add(foodList.size());
-					mealList.remove(0, mealList.size()-1);
+					labelL.setText("There are " + foodCount.get(0) + " food items");
+					mealList.remove(0, mealList.size());
 				}
 			}
 		});
@@ -203,7 +205,7 @@ public class UiComponents {
 
 		foodColumn.setCellValueFactory( new PropertyValueFactory<>("name"));
 		tableL.setItems(foodList);
-		foodCount.add(tableL.getItems().size());
+		foodCount.add(initialFoodData.getAllFoodItems().size());
 		tableL.getColumns().add(foodColumn);
 		tableL.setRowFactory(tv -> {
 		    TableRow<FoodItem> row = new TableRow<>();
